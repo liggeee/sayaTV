@@ -1,9 +1,7 @@
 package sayatv;
 
-import java.util.ArrayList;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.BufferedReader;
+import java.util.*;
+import java.io.*;
 
 public class SayaTV {
 
@@ -162,11 +160,21 @@ public class SayaTV {
     }
 
     static void signIn() throws IOException {
-        System.out.println("========= SignIn =========");
-        System.out.print("Masukkan username: ");
-        signIn.username = input.read.readLine();
-        System.out.print("Masukkan password: ");
-        signIn.password = input.read.readLine();
+        do {
+            System.out.println("========= SignIn =========");
+            System.out.print("Masukkan username: ");
+            signIn.username = input.read.readLine();
+            System.out.print("Masukkan password: ");
+            signIn.password = input.read.readLine();
+            if (admin.dataUsername.contains(signIn.username) && admin.dataPassword.contains(signIn.password)) {
+                showMenuAdmin(0);
+            } else if (user.dataUsername.contains(signIn.username) && user.dataPassword.contains(signIn.password)) {
+                showMenuUser(0);
+            } else {
+                System.out.println("Password atau Username SALAH!!!");
+            }
+        } while (kondisi);
+
     }
 
     static void lupaPassword() throws IOException {
@@ -317,7 +325,6 @@ public class SayaTV {
             }
         }
 
-
     }
 
     static void infoPaket() {
@@ -413,18 +420,21 @@ public class SayaTV {
                     System.out.println("sukses");
                 }
                 garisTepi();
-                System.out.print("Kembali ke menu? (Y/N) ");
+                System.out.print("Kembali Tampilan awal (Y/N) ");
                 String pilihan = input.read.readLine();
                 if (pilihan.equalsIgnoreCase("y")) {
                     kondisi1 = false;
                 } else if (pilihan.equalsIgnoreCase("n")) {
+                    kondisi1 = false;
                     garisTepi();
-                    System.exit(0);
+                } else {
+                    garisTepi();
+                    System.out.println("Inputan Salah");
                 }
+                kondisi = true;
                 garisTepi();
             } while (kondisi1);
         } while (kondisi);
-
     }
 
 }
