@@ -11,6 +11,7 @@ public class SayaTV {
     ArrayList dataUsername = new ArrayList();
     ArrayList dataPassword = new ArrayList();
     ArrayList dataEmail = new ArrayList();
+    ArrayList dataIdPegawai = new ArrayList();
     ArrayList dataAlamat = new ArrayList();
     ArrayList dataNama = new ArrayList();
     static ArrayList dataPaket = new ArrayList();
@@ -30,6 +31,7 @@ public class SayaTV {
     String email;
     String pilihan;
     String hobi;
+    String IdPegawai;
     long noHP;
     static SayaTV data = new SayaTV();
     static SayaTV input = new SayaTV();
@@ -47,19 +49,19 @@ public class SayaTV {
     }
 
     static void form() throws IOException {
-        System.out.print("Masukkan nama: ");
+        System.out.print("Masukkan nama : ");
         data.nama = input.read.readLine();
-        System.out.print("Masukkan alamat: ");
+        System.out.print("Masukkan alamat   : ");
         data.alamat = input.read.readLine();
-        System.out.print("Masukkan usename: ");
+        System.out.print("Masukkan usename  : ");
         data.username = input.read.readLine();
-        System.out.print("Mauskkan password: ");
+        System.out.print("Mauskkan password : ");
         data.password = input.read.readLine();
-        System.out.print("Masukkan email: ");
+        System.out.print("Masukkan email    : ");
         data.email = input.read.readLine();
-        System.out.print("Masukkan no-HP: ");
+        System.out.print("Masukkan no-HP    : ");
         data.noHP = Long.valueOf(input.read.readLine());
-        System.out.print("Masukkan hobi: ");
+        System.out.print("Masukkan hobi : ");
         data.hobi = input.read.readLine();
 
     }
@@ -103,13 +105,15 @@ public class SayaTV {
             if (pilihan.equalsIgnoreCase("admin")) {
                 System.out.println("========= SignUp =========");
                 form();
+                        System.out.print("Masukkan ID Pegawai :");
+                        data.IdPegawai = input.read.readLine();
                 garisTepi();
-                if (!admin.dataUsername.contains(data.username)) {
+                if (!admin.dataIdPegawai.contains(data.IdPegawai)) {
                     admin.dataNama.add(data.nama);
                     admin.dataAlamat.add(data.alamat);
                     admin.dataEmail.add(data.email);
                     admin.dataNoHP.add(data.noHP);
-                    admin.dataUsername.add(data.username);
+                    admin.dataIdPegawai.add(data.IdPegawai);
                     admin.dataPassword.add(data.password);
                     admin.dataHobi.add(data.hobi);
                     kondisi = false;
@@ -402,7 +406,7 @@ public class SayaTV {
         garisTepi();
         System.out.println();
         garisTepi();
-        System.out.format("Saluran ke-%d telah tersimpan", i + 1);
+        System.out.format("Saluran ke-%d telah tersimpan\n", i + 1);
     }
 
     void infoAkun(int i) throws IOException {
