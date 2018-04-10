@@ -30,8 +30,9 @@ public class SayaTV {
     String alamat;
     String paket;
     String email;
+    String pilihan;
     String hobi;
-    int noHP;
+    long noHP;
     static SayaTV data = new SayaTV();
     static SayaTV input = new SayaTV();
     static SayaTV signIn = new SayaTV();
@@ -59,7 +60,7 @@ public class SayaTV {
         System.out.print("Masukkan email: ");
         data.email = input.read.readLine();
         System.out.print("Masukkan no-HP: ");
-        data.noHP = Integer.valueOf(input.read.readLine());
+        data.noHP = Long.valueOf(input.read.readLine());
         System.out.print("Masukkan hobi: ");
         data.hobi = input.read.readLine();
 
@@ -70,6 +71,7 @@ public class SayaTV {
         System.out.println("[1]. SignIn");
         System.out.println("[2]. SignUp");
         System.out.println("[3]. Lupa password");
+        System.out.println("[4]. Keluar Aplikasi");
         System.out.print("Pilih: ");
         int pilihan = Integer.valueOf(input.read.readLine());
         garisTepi();
@@ -83,6 +85,9 @@ public class SayaTV {
                 break;
             case 3:
                 lupaPassword();
+                break;
+            case 4:
+                System.exit(0);
                 break;
             default:
                 garisTepi();
@@ -113,9 +118,9 @@ public class SayaTV {
                     System.out.println();
                     garisTepi();
                     System.out.println("Selamat anda berhasil mendaftar");
-                    
+
                 } else {
-                    
+
                     System.out.println();
                     garisTepi();
                     System.out.println("SignUp dibatalkan");
@@ -311,7 +316,7 @@ public class SayaTV {
                     noPilihan();
             }
         }
-        
+
 
     }
 
@@ -401,12 +406,25 @@ public class SayaTV {
         do {
             menuAwal();
             garisTepi();
-            System.out.println();
-            if (user.dataUsername.contains(signIn.username) && user.dataPassword.contains(signIn.password)) {
-                System.out.println("sukses");
-            }
+            boolean kondisi1 = true;
+            do {
+                System.out.println();
+                if (user.dataUsername.contains(signIn.username) && user.dataPassword.contains(signIn.password)) {
+                    System.out.println("sukses");
+                }
+                garisTepi();
+                System.out.print("Kembali ke menu? (Y/N) ");
+                String pilihan = input.read.readLine();
+                if (pilihan.equalsIgnoreCase("y")) {
+                    kondisi1 = false;
+                } else if (pilihan.equalsIgnoreCase("n")) {
+                    garisTepi();
+                    System.exit(0);
+                }
+                garisTepi();
+            } while (kondisi1);
         } while (kondisi);
-        
+
     }
 
 }
