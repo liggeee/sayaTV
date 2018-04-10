@@ -103,7 +103,7 @@ public class SayaTV {
                 form();
                 System.out.print("Masukkan ID Pegawai :");
                 data.IdPegawai = input.read.readLine();
-                System.out.print("Mauskkan password : ");
+                System.out.print("Masukkan password : ");
                 data.password = input.read.readLine();
                 garisTepi();
                 if (!admin.dataIdPegawai.contains(data.IdPegawai)) {
@@ -423,9 +423,6 @@ public class SayaTV {
             boolean kondisi1 = true;
             do {
                 System.out.println();
-                if (user.dataID.contains(signIn.ID) && user.dataPassword.contains(signIn.password)) {
-                    System.out.println("sukses");
-                }
                 garisTepi();
                 System.out.print("Kembali Tampilan awal (Y/N) ");
                 String pilihan = input.read.readLine();
