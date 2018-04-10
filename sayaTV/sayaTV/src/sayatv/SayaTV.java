@@ -8,7 +8,7 @@ public class SayaTV {
     static InputStreamReader scan = new InputStreamReader(System.in);
     final BufferedReader read = new BufferedReader(scan);
     static boolean kondisi = true;
-    ArrayList dataUsername = new ArrayList();
+    ArrayList dataID = new ArrayList();
     ArrayList dataPassword = new ArrayList();
     ArrayList dataEmail = new ArrayList();
     ArrayList dataIdPegawai = new ArrayList();
@@ -24,7 +24,7 @@ public class SayaTV {
     String saluranTV;
     String harga;
     String nama;
-    String username;
+    String ID;
     String password;
     String alamat;
     String paket;
@@ -53,15 +53,11 @@ public class SayaTV {
         data.nama = input.read.readLine();
         System.out.print("Masukkan alamat   : ");
         data.alamat = input.read.readLine();
-        System.out.print("Masukkan usename  : ");
-        data.username = input.read.readLine();
-        System.out.print("Mauskkan password : ");
-        data.password = input.read.readLine();
         System.out.print("Masukkan email    : ");
         data.email = input.read.readLine();
         System.out.print("Masukkan no-HP    : ");
         data.noHP = Long.valueOf(input.read.readLine());
-        System.out.print("Masukkan hobi : ");
+        System.out.print("Masukkan hobi     : ");
         data.hobi = input.read.readLine();
 
     }
@@ -105,8 +101,10 @@ public class SayaTV {
             if (pilihan.equalsIgnoreCase("admin")) {
                 System.out.println("========= SignUp =========");
                 form();
-                        System.out.print("Masukkan ID Pegawai :");
-                        data.IdPegawai = input.read.readLine();
+                System.out.print("Masukkan ID Pegawai :");
+                data.IdPegawai = input.read.readLine();
+                System.out.print("Mauskkan password : ");
+                data.password = input.read.readLine();
                 garisTepi();
                 if (!admin.dataIdPegawai.contains(data.IdPegawai)) {
                     admin.dataNama.add(data.nama);
@@ -132,12 +130,17 @@ public class SayaTV {
             } else if (pilihan.equalsIgnoreCase("user")) {
                 System.out.println("========= SignUp =========");
                 form();
-                if (!user.dataUsername.contains(data.username)) {
+                System.out.print("Masukkan ID   : ");
+                data.ID = input.read.readLine();
+                System.out.print("Mauskkan password : ");
+                data.password = input.read.readLine();
+                garisTepi();
+                if (!user.dataID.contains(data.ID)) {
                     user.dataNama.add(data.nama);
                     user.dataAlamat.add(data.alamat);
                     user.dataEmail.add(data.email);
                     user.dataNoHP.add(data.noHP);
-                    user.dataUsername.add(data.username);
+                    user.dataID.add(data.ID);
                     user.dataPassword.add(data.password);
                     user.dataHobi.add(data.hobi);
                     kondisi = false;
@@ -166,13 +169,13 @@ public class SayaTV {
     static void signIn() throws IOException {
         do {
             System.out.println("========= SignIn =========");
-            System.out.print("Masukkan username: ");
-            signIn.username = input.read.readLine();
+            System.out.print("Masukkan ID Anda : ");
+            signIn.ID = input.read.readLine();
             System.out.print("Masukkan password: ");
             signIn.password = input.read.readLine();
-            if (admin.dataUsername.contains(signIn.username) && admin.dataPassword.contains(signIn.password)) {
+            if (admin.dataIdPegawai.contains(signIn.ID) && admin.dataPassword.contains(signIn.password)) {
                 showMenuAdmin(0);
-            } else if (user.dataUsername.contains(signIn.username) && user.dataPassword.contains(signIn.password)) {
+            } else if (user.dataID.contains(signIn.ID) && user.dataPassword.contains(signIn.password)) {
                 showMenuUser(0);
             } else {
                 System.out.println("Password atau Username SALAH!!!");
@@ -183,22 +186,22 @@ public class SayaTV {
 
     static void lupaPassword() throws IOException {
         System.out.println("====== Lupa password =====");
-        System.out.print("Masukkan username: ");
+        System.out.print("Masukkan ID: ");
         String username = input.read.readLine();
         System.out.print("Masukkan hobi: ");
         String hobi = input.read.readLine();
-        if ((user.dataUsername.contains(username) && user.dataHobi.contains(hobi)) || (admin.dataUsername.contains(username) && admin.dataHobi.contains(hobi))) {
-            int i = user.dataUsername.indexOf(username);
-            int j = admin.dataUsername.indexOf(username);
+        if ((user.dataID.contains(username) && user.dataHobi.contains(hobi)) || (admin.dataIdPegawai.contains(username) && admin.dataHobi.contains(hobi))) {
+            int i = user.dataID.indexOf(username);
+            int j = admin.dataIdPegawai.indexOf(username);
             do {
                 System.out.print("Password baru: ");
                 String password = input.read.readLine();
                 System.out.print("Konfirmasi password: ");
                 String confirmPassword = input.read.readLine();
                 if (password.equals(confirmPassword)) {
-                    if (user.dataUsername.contains(username)) {
+                    if (user.dataID.contains(username)) {
                         user.dataPassword.set(i, password);
-                    } else if (admin.dataUsername.contains(username)) {
+                    } else if (admin.dataIdPegawai.contains(username)) {
                         admin.dataPassword.set(j, password);
                     }
                     System.out.println("Password berhasil diubah");
@@ -341,7 +344,7 @@ public class SayaTV {
 
     static void daftarPelanggan() {
         System.out.println("=== Daftar & Info Pelanggan ===");
-        if (user.dataUsername.isEmpty()) {
+        if (user.dataID.isEmpty()) {
             System.out.println("Belum ada pelanggan");
 
         }
@@ -420,7 +423,7 @@ public class SayaTV {
             boolean kondisi1 = true;
             do {
                 System.out.println();
-                if (user.dataUsername.contains(signIn.username) && user.dataPassword.contains(signIn.password)) {
+                if (user.dataID.contains(signIn.ID) && user.dataPassword.contains(signIn.password)) {
                     System.out.println("sukses");
                 }
                 garisTepi();
