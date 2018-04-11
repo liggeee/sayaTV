@@ -8,31 +8,38 @@ public class SayaTV {
     static InputStreamReader scan = new InputStreamReader(System.in);
     final BufferedReader read = new BufferedReader(scan);
     static boolean kondisi = true;
-    ArrayList dataID = new ArrayList();
+    static ArrayList dataIdUser = new ArrayList();
     ArrayList dataPassword = new ArrayList();
     ArrayList dataEmail = new ArrayList();
-    ArrayList dataIdPegawai = new ArrayList();
+    static ArrayList dataIdAdmin = new ArrayList();
     ArrayList dataAlamat = new ArrayList();
     ArrayList dataNama = new ArrayList();
     static ArrayList dataPaket = new ArrayList();
     static ArrayList dataHarga = new ArrayList();
     static ArrayList dataSaluranTV = new ArrayList();
     static ArrayList dataPaketSaluranTV = new ArrayList();
+    static ArrayList dataPelanggan = new ArrayList();
     ArrayList dataNoHP = new ArrayList();
     ArrayList dataHobi = new ArrayList();
     String paketSaluranTV;
     String saluranTV;
     String harga;
     String nama;
-    String ID;
+    String Id;
     String password;
     String alamat;
     String paket;
     String email;
     String pilihan;
     String hobi;
-    String IdPegawai;
+    static boolean kondisiMain = true;
     long noHP;
+    boolean autentikasi;
+    int indeks;
+    static String validasi;
+    static String alamatKantor;
+    static long noRekeningKantor;
+    static long noTelpKantor;
     static SayaTV data = new SayaTV();
     static SayaTV input = new SayaTV();
     static SayaTV signIn = new SayaTV();
@@ -74,16 +81,18 @@ public class SayaTV {
         System.out.println();
         switch (pilihan) {
             case 1:
+                System.out.println("========= SignIn =========");
                 signIn();
                 break;
             case 2:
                 signUp();
                 break;
             case 3:
+                System.out.println("====== Lupa password =====");
                 lupaPassword();
                 break;
             case 4:
-                System.exit(0);
+                kondisiMain = false;
                 break;
             default:
                 garisTepi();
@@ -100,61 +109,72 @@ public class SayaTV {
             System.out.println();
             if (pilihan.equalsIgnoreCase("admin")) {
                 System.out.println("========= SignUp =========");
-                form();
-                System.out.print("Masukkan ID Pegawai :");
-                data.IdPegawai = input.read.readLine();
-                System.out.print("Mauskkan password : ");
-                data.password = input.read.readLine();
+                System.out.print("Masukkan kode admin(didapatkan dari developer): ");
+                int kode = Integer.valueOf(input.read.readLine());
                 garisTepi();
-                if (!admin.dataIdPegawai.contains(data.IdPegawai)) {
-                    admin.dataNama.add(data.nama);
-                    admin.dataAlamat.add(data.alamat);
-                    admin.dataEmail.add(data.email);
-                    admin.dataNoHP.add(data.noHP);
-                    admin.dataIdPegawai.add(data.IdPegawai);
-                    admin.dataPassword.add(data.password);
-                    admin.dataHobi.add(data.hobi);
-                    kondisi = false;
-                    System.out.println();
+                System.out.println();
+                if (kode == 23571113) {
+                    System.out.println("========= SignUp =========");
+                    form();
+                    System.out.print("Masukkan ID Admin : ");
+                    data.Id = input.read.readLine();
+                    System.out.print("Mauskkan password : ");
+                    data.password = input.read.readLine();
                     garisTepi();
-                    System.out.println("Selamat anda berhasil mendaftar");
-
+                    if (!dataIdAdmin.contains(data.Id) && !dataIdUser.contains(data.Id)) {
+                        admin.dataNama.add(data.nama);
+                        admin.dataAlamat.add(data.alamat);
+                        admin.dataEmail.add(data.email);
+                        admin.dataNoHP.add(data.noHP);
+                        dataIdAdmin.add(data.Id);
+                        admin.dataPassword.add(data.password);
+                        admin.dataHobi.add(data.hobi);
+                        kondisi = false;
+                        System.out.println();
+                        garisTepi();
+                        System.out.println("Selamat anda berhasil mendaftar");
+                    } else {
+                        System.out.println();
+                        garisTepi();
+                        System.out.println("SignUp dibatalkan");
+                        System.out.println("Username sudah digunakan");
+                        kondisi = false;
+                    }
                 } else {
-
-                    System.out.println();
                     garisTepi();
-                    System.out.println("SignUp dibatalkan");
-                    System.out.println("Username sudah digunakan");
+                    System.out.println("Kode admin salah. Harap hubungi developer");
                     kondisi = false;
                 }
+                garisTepi();
+                System.out.println();
             } else if (pilihan.equalsIgnoreCase("user")) {
                 System.out.println("========= SignUp =========");
                 form();
-                System.out.print("Masukkan ID   : ");
-                data.ID = input.read.readLine();
+                System.out.print("Masukkan ID User : ");
+                data.Id = input.read.readLine();
                 System.out.print("Mauskkan password : ");
                 data.password = input.read.readLine();
                 garisTepi();
-                if (!user.dataID.contains(data.ID)) {
+                System.out.println();
+                if (!dataIdUser.contains(data.Id) && !dataIdAdmin.contains(data.Id)) {
                     user.dataNama.add(data.nama);
                     user.dataAlamat.add(data.alamat);
                     user.dataEmail.add(data.email);
                     user.dataNoHP.add(data.noHP);
-                    user.dataID.add(data.ID);
+                    dataIdUser.add(data.Id);
                     user.dataPassword.add(data.password);
                     user.dataHobi.add(data.hobi);
                     kondisi = false;
+                    garisTepi();
                     System.out.println("Selamat anda berhasil mendaftar");
-                    garisTepi();
-                    System.out.println();
-                    garisTepi();
                 } else {
-                    System.out.println();
                     garisTepi();
                     System.out.println("SignUp dibatalkan");
                     System.out.println("Username sudah digunakan");
                     kondisi = false;
                 }
+                garisTepi();
+                System.out.println();
             } else {
                 garisTepi();
                 noPilihan();
@@ -163,55 +183,94 @@ public class SayaTV {
                 System.out.println();
             }
         } while (kondisi);
-
     }
 
     static void signIn() throws IOException {
-        do {
-            System.out.println("========= SignIn =========");
-            System.out.print("Masukkan ID Anda : ");
-            signIn.ID = input.read.readLine();
-            System.out.print("Masukkan password: ");
-            signIn.password = input.read.readLine();
-            if (admin.dataIdPegawai.contains(signIn.ID) && admin.dataPassword.contains(signIn.password)) {
-                showMenuAdmin(0);
-            } else if (user.dataID.contains(signIn.ID) && user.dataPassword.contains(signIn.password)) {
-                showMenuUser(0);
+        System.out.print("Masukkan ID Anda : ");
+        signIn.Id = input.read.readLine();
+        System.out.print("Masukkan password: ");
+        signIn.password = input.read.readLine();
+        garisTepi();
+        System.out.println();
+        if (dataIdAdmin.contains(signIn.Id)) {
+            int i = dataIdAdmin.indexOf(signIn.Id);
+            garisTepi();
+            if (signIn.password.equals(admin.dataPassword.get(i))) {
+                System.out.println("Login berhasil");
+                admin.autentikasi = true;
+                admin.indeks = i;
             } else {
-                System.out.println("Password atau Username SALAH!!!");
+                System.out.println("Id atau password salah");
             }
-        } while (kondisi);
-
+            garisTepi();
+            System.out.println();
+        } else if (dataIdUser.contains(signIn.Id)) {
+            int i = dataIdUser.indexOf(signIn.Id);
+            garisTepi();
+            if (signIn.password.equals(user.dataPassword.get(i))) {
+                System.out.println("Login berhasil");
+                user.autentikasi = true;
+                user.indeks = i;
+            } else {
+                System.out.println("Id atau password salah");
+            }
+            garisTepi();
+            System.out.println();
+        } else {
+            garisTepi();
+            System.out.println("Id atau password salah");
+            garisTepi();
+            System.out.println();
+        }
+//        garisTepi();
+//        System.out.println();
     }
 
     static void lupaPassword() throws IOException {
-        System.out.println("====== Lupa password =====");
+
         System.out.print("Masukkan ID: ");
-        String username = input.read.readLine();
+        String id = input.read.readLine();
         System.out.print("Masukkan hobi: ");
         String hobi = input.read.readLine();
-        if ((user.dataID.contains(username) && user.dataHobi.contains(hobi)) || (admin.dataIdPegawai.contains(username) && admin.dataHobi.contains(hobi))) {
-            int i = user.dataID.indexOf(username);
-            int j = admin.dataIdPegawai.indexOf(username);
-            do {
-                System.out.print("Password baru: ");
-                String password = input.read.readLine();
-                System.out.print("Konfirmasi password: ");
-                String confirmPassword = input.read.readLine();
-                if (password.equals(confirmPassword)) {
-                    if (user.dataID.contains(username)) {
-                        user.dataPassword.set(i, password);
-                    } else if (admin.dataIdPegawai.contains(username)) {
-                        admin.dataPassword.set(j, password);
+        garisTepi();
+        System.out.println();
+        if (((dataIdUser.contains(id) || dataIdAdmin.contains(id))) && ((!dataIdUser.isEmpty() || !dataIdAdmin.isEmpty()))) {
+            int i = user.dataHobi.indexOf(hobi);
+            int j = admin.dataHobi.indexOf(hobi);
+            if ((String.valueOf(user.dataHobi.get(i)).equalsIgnoreCase(hobi)) || (String.valueOf(admin.dataHobi.get(j))).equalsIgnoreCase(hobi)) {
+                do {
+                    garisTepi();
+                    System.out.print("Password baru: ");
+                    String password = input.read.readLine();
+                    System.out.print("Konfirmasi password: ");
+                    String confirmPassword = input.read.readLine();
+                    garisTepi();
+                    System.out.println();
+                    garisTepi();
+                    if (password.equals(confirmPassword)) {
+                        if (dataIdUser.contains(id)) {
+                            user.dataPassword.set(i, password);
+                        } else if (dataIdAdmin.contains(id)) {
+                            admin.dataPassword.set(j, password);
+                        }
+                        System.out.println("Password berhasil diubah");
+                        kondisi = false;
+                    } else {
+                        System.out.println("Ulangi lagi");
                     }
-                    System.out.println("Password berhasil diubah");
-                    kondisi = false;
-                } else {
-                    System.out.println("Ulangi lagi");
-                }
-            } while (kondisi);
+                    garisTepi();
+                    System.out.println();
+                } while (kondisi);
+            } else {
+                System.out.println("Id dan hobi tidak ditemukan");
+                garisTepi();
+                System.out.println();
+            }
         } else {
-            System.out.println("Username tidak ditemukan");
+            garisTepi();
+            System.out.println("Id dan hobi tidak ditemukan");
+            garisTepi();
+            System.out.println();
         }
     }
 
@@ -222,33 +281,46 @@ public class SayaTV {
         System.out.println("[3]. Info paket berlangganan");
         System.out.println("[4]. Berhenti berlangganan");
         System.out.println("[5]. Info akun");
-        System.out.println("[6]. Logout");
+        System.out.println("[6]. Info Kantor");
+        System.out.println("[7]. Logout");
         System.out.print("Pilih: ");
         int pilihan = Integer.valueOf(input.read.readLine());
         garisTepi();
         System.out.println();
         switch (pilihan) {
             case 1:
+                System.out.println("====== Daftar Paket ======");
                 daftarPaket("tersedia");
                 break;
             case 2:
-                beliPaket();
+                System.out.println("======= Beli Paket =======");
+                beliPaket(alamatKantor, noRekeningKantor, noTelpKantor);
                 break;
             case 3:
-                infoPaket();
+                garisTepi();
+                System.out.println("Maaf menu belum tersedia");
+//                System.out.println("==== Info Berlangganan ===");
+//                infoPaketBerlangganan();
                 break;
             case 4:
-                berhentiPaket();
+                garisTepi();
+                System.out.println("Maaf menu belum tersedia");
+//                System.out.println("== Berhenti Berlangganan =");
+//                berhentiPaket();
                 break;
             case 5:
-                user.infoAkun(i);
+                System.out.println("======== Info Akun =======");
+                infoAkunUser(i);
                 break;
             case 6:
-                menuAwal();
+                System.out.println("======= Info Kantor ======");
+                infoKantor();
+                break;
+            case 7:
+                user.autentikasi = false;
                 break;
             default:
                 noPilihan();
-
         }
     }
 
@@ -259,82 +331,111 @@ public class SayaTV {
         System.out.println("[3]. Daftar Saluran TV");
         System.out.println("[4]. Tambahkan Paket");
         System.out.println("[5]. Tambahkan saluran TV");
-        System.out.println("[6]. Info Akun");
-        System.out.println("[7]. Logout");
+        System.out.println("[6]. Validasi Pembayaran Paket");
+        System.out.println("[7]. Info Akun");
+        System.out.println("[8]. Info Kantor");
+        System.out.println("[9]. Logout");
         System.out.print("Pilih: ");
         int pilihan = Integer.valueOf(input.read.readLine());
+        garisTepi();
+        System.out.println();
         switch (pilihan) {
             case 1:
+                System.out.println("=== Daftar & Info Pelanggan ===");
                 daftarPelanggan();
                 break;
             case 2:
+                System.out.println("====== Daftar Paket ======");
                 daftarPaket("ditambahkan");
                 break;
             case 3:
+                System.out.println("==== Daftar Saluran TV ===");
                 daftarSaluranTV();
                 break;
             case 4:
+                System.out.println("===== Tambahkan Paket ====");
                 addPaket();
                 break;
             case 5:
+                System.out.println("== Tambahkan Saluran TV ==");
                 addSaluranTV();
                 break;
             case 6:
-                admin.infoAkun(i);
+                System.out.println("== Validasi Pembayaran ===");
+                validasiPembayaran();
                 break;
             case 7:
-                menuAwal();
+                System.out.println("======== Info Akun =======");
+                infoAkunAdmin(i);
+                break;
+            case 8:
+                System.out.println("======= Info Kantor ======");
+                infoKantor();
+                break;
+            case 9:
+                admin.autentikasi = false;
                 break;
             default:
+                garisTepi();
                 noPilihan();
         }
-
     }
 
     static void daftarPaket(String keterangan) throws IOException {
-        System.out.println("====== Daftar Paket ======");
         if (dataPaket.isEmpty()) {
             System.out.println("Paket belum " + keterangan);
         } else {
             for (int i = 0; i < dataPaket.size(); i++) {
-                System.out.format("[d]. Paket %s\n", (i + 1), dataPaket.get(i));
-                System.out.println("    Saluran TV : ");
+                System.out.format("[%d]. Paket %s\n", (i + 1), String.valueOf(dataPaket.get(i)));
+                System.out.println("     Saluran TV : ");
                 for (int j = 0; j < dataPaketSaluranTV.size(); j++) {
-                    System.out.format("    %d. %s\n", (j + 1), dataPaketSaluranTV.get(j));
+                    System.out.format("     %d. %s\n", (j + 1), String.valueOf(dataPaketSaluranTV.get(j)));
                 }
-                System.out.format("     Harga %s", dataHarga.get(i));
+                System.out.format("     Harga %d", Integer.valueOf(String.valueOf(dataHarga.get(i))));
                 System.out.println();
             }
-
         }
     }
 
-    static void beliPaket() throws IOException {
+    static void beliPaket(String tempat, long noRekening, long noTelp) throws IOException {
         daftarPaket("tersedia");
-        System.out.print("Pilih paket: ");
-        int pilihan = Integer.valueOf(input.read.readLine());
-        if (pilihan <= dataPaket.size() && pilihan > 0) {
-            System.out.println("Mode pembayaran: ");
-            System.out.println("[1]. Bayar langsung ke tempat");
-            System.out.println("[2]. Via ATM");
-            int i = Integer.valueOf(input.read.readLine());
-            switch (i) {
-                case 1:
-                    System.out.println("Pembayaran di");
-                    break;
-                case 2:
-                    System.out.println("Pembayaran dikirim ke nomer");
-                    System.out.println("Setelah selesai silahkan upload foto bukti pembayaran ke nomor");
-                    System.out.println("guna memvalidasi pembayaran");
-                    break;
-                default:
-                    noPilihan();
+        if (!dataPaket.isEmpty()) {
+            System.out.print("Pilih paket: ");
+            int pilihan = Integer.valueOf(input.read.readLine());
+            String abc = String.valueOf(dataPaket.get(pilihan));
+            garisTepi();
+            System.out.println();
+            if (pilihan <= dataPaket.size() && pilihan > 0) {
+                garisTepi();
+                System.out.println("Mode pembayaran: ");
+                System.out.println("[1]. Bayar langsung ke tempat");
+                System.out.println("[2]. Via ATM");
+                int i = Integer.valueOf(input.read.readLine());
+                garisTepi();
+                System.out.println();
+                garisTepi();
+                switch (i) {
+                    case 1:
+                        System.out.println("Pembayaran di " + tempat);
+                        break;
+                    case 2:
+                        System.out.println("Pembayaran dikirim ke nomer" + noTelp);
+                        System.out.println("Setelah selesai silahkan upload foto");
+                        System.out.println("bukti pembayaran dan id Anda ke nomor" + noRekening);
+                        System.out.println("guna memvalidasi pembayaran");
+                        break;
+                    default:
+                        noPilihan();
+                }
+            } else {
+                garisTepi();
+                noPilihan();
             }
         }
 
     }
 
-    static void infoPaket() {
+    static void infoPaketBerlangganan() {
 
     }
 
@@ -343,28 +444,37 @@ public class SayaTV {
     }
 
     static void daftarPelanggan() {
-        System.out.println("=== Daftar & Info Pelanggan ===");
-        if (user.dataID.isEmpty()) {
+        if (dataPelanggan.isEmpty()) {
             System.out.println("Belum ada pelanggan");
-
+        } else {
+            for (int i = 0; i < dataPelanggan.size(); i++) {
+                int j = dataIdUser.indexOf(dataPelanggan.get(i));
+                System.out.println("Pelanggan ke-" + (i + 1));
+                System.out.format("Nama: %s\n", user.dataNama.get(j));
+                System.out.format("Alamat: %s\n", user.dataAlamat.get(j));
+                System.out.format("Hobi: %s\n", user.dataHobi.get(j));
+                System.out.format("No. HP: %d\n", user.dataNoHP.get(j));
+                System.out.format("Email: %s\n", user.dataEmail.get(j));
+            }
         }
 
     }
 
     static void daftarSaluranTV() {
-        System.out.println("==== Daftar Saluran TV ===");
+
         if (dataSaluranTV.isEmpty()) {
             System.out.println("Saluran TV belum ditambahkan");
         } else {
             for (int i = 0; i < dataSaluranTV.size(); i++) {
-                System.out.format("[d]. %s. ", (i + 1), dataSaluranTV.get(i));
+                System.out.format("[%d]. %s. ", (i + 1), String.valueOf(dataSaluranTV.get(i)));
                 System.out.println();
             }
         }
     }
 
     static void addPaket() throws IOException {
-        System.out.println("===== Tambahkan Paket ====");
+        boolean kondisiAddPaket = true;
+        boolean kondisiAddPaket1 = true;
         if (dataSaluranTV.isEmpty()) {
             System.out.println("Saluran TV belum ditambahkan");
         } else {
@@ -374,18 +484,18 @@ public class SayaTV {
                 int i = Integer.valueOf(input.read.readLine());
                 data.paketSaluranTV = String.valueOf(dataSaluranTV.get(i - 1));
                 dataPaketSaluranTV.add(data.paketSaluranTV);
-                boolean kondisi1 = true;
+                garisTepi();
+                System.out.println();
+                garisTepi();
                 do {
                     System.out.print("Pilih lagi?(Y/N) ");
                     String pilihan = input.read.readLine();
-                    if (pilihan.equalsIgnoreCase("y")) {
-                        kondisi1 = false;
-                    } else if (pilihan.equalsIgnoreCase("n")) {
-                        kondisi1 = false;
-                        kondisi = false;
+                    if (pilihan.equalsIgnoreCase("n")) {
+                        kondisiAddPaket1 = false;
+                        kondisiAddPaket = false;
                     }
-                } while (kondisi1);
-            } while (kondisi);
+                } while (kondisiAddPaket1);
+            } while (kondisiAddPaket);
             System.out.print("Nama paket: ");
             data.paket = input.read.readLine();
             System.out.print("Harga paket: ");
@@ -396,12 +506,12 @@ public class SayaTV {
             garisTepi();
             System.out.println();
             garisTepi();
-            System.out.format("Paket ke-%d telah tersimpan", j + 1);
+            System.out.format("Paket ke-%d telah tersimpan\n", j + 1);
         }
     }
 
     static void addSaluranTV() throws IOException {
-        System.out.println("== Tambahkan Saluran TV ==");
+
         System.out.print("Masukkan saluran TV: ");
         data.saluranTV = input.read.readLine();
         int i = dataSaluranTV.size();
@@ -412,36 +522,75 @@ public class SayaTV {
         System.out.format("Saluran ke-%d telah tersimpan\n", i + 1);
     }
 
-    void infoAkun(int i) throws IOException {
+    static void infoAkunUser(int i) throws IOException {
+        System.out.format("Nama: %s\n", user.dataNama.get(i));
+        System.out.format("Alamat: %s\n", user.dataAlamat.get(i));
+        System.out.format("Hobi: %s\n", user.dataHobi.get(i));
+        System.out.format("No. HP: %d\n", user.dataNoHP.get(i));
+        System.out.format("Email: %s\n", user.dataEmail.get(i));
+    }
+
+    static void infoAkunAdmin(int i) throws IOException {
+        System.out.format("Nama: %s\n", admin.dataNama.get(i));
+        System.out.format("Alamat: %s\n", admin.dataAlamat.get(i));
+        System.out.format("Hobi: %s\n", admin.dataHobi.get(i));
+        System.out.format("No. HP: %d\n", admin.dataNoHP.get(i));
+        System.out.format("Email: %s\n", admin.dataEmail.get(i));
+    }
+
+    static void validasiPembayaran() throws IOException {
+        System.out.print("Masukkan id user yang telah membayar: ");
+        validasi = input.read.readLine();
+        garisTepi();
+        System.out.println();
+        garisTepi();
+        if (dataIdUser.contains(validasi)) {
+            dataPelanggan.add(validasi);
+            System.out.println("Validasi sukses");
+        } else {
+            System.out.println("Id user tidak ditemukan");
+        }
+
+    }
+
+    static void infoKantor() throws IOException {
+        if (alamatKantor != null) {
+            System.out.format("- Alamat kantor: %s\n", alamatKantor);
+            System.out.format("- No. rekening kantor: %d\n", noRekeningKantor);
+            System.out.format("- No. telepon kantor: %d\n", noTelpKantor);
+        } else {
+            System.out.println("Informasi kantor belum tersedia");
+        }
 
     }
 
     public static void main(String[] args) throws IOException {
         do {
             menuAwal();
-            garisTepi();
-            boolean kondisi1 = true;
-            do {
+            while (user.autentikasi) {
+                showMenuUser(user.indeks);
+                garisTepi();
                 System.out.println();
-                if (user.dataID.contains(signIn.ID) && user.dataPassword.contains(signIn.password)) {
-                    System.out.println("sukses");
-                }
-                garisTepi();
-                System.out.print("Kembali Tampilan awal (Y/N) ");
-                String pilihan = input.read.readLine();
-                if (pilihan.equalsIgnoreCase("y")) {
-                    kondisi1 = false;
-                } else if (pilihan.equalsIgnoreCase("n")) {
-                    kondisi1 = false;
+            }
+            while (admin.autentikasi) {
+                if (alamatKantor == null) {
                     garisTepi();
-                } else {
+                    System.out.println("Informasi kantor masih kosong");
+                    System.out.println("Harap diisi");
+                    System.out.print("Masukkan alamat kantor sayaTV: ");
+                    alamatKantor = input.read.readLine();
+                    System.out.print("Masukkan no. rekening kantor sayaTV: ");
+                    noRekeningKantor = Integer.valueOf(input.read.readLine());
+                    System.out.print("Masukkan no. Telp kantor sayaTV: ");
+                    noTelpKantor = Integer.valueOf(input.read.readLine());
                     garisTepi();
-                    System.out.println("Inputan Salah");
+                    System.out.println();
                 }
-                kondisi = true;
+                showMenuAdmin(admin.indeks);
                 garisTepi();
-            } while (kondisi1);
-        } while (kondisi);
+                System.out.println();
+            }
+        } while (kondisiMain);
+        garisTepi();
     }
-
 }
